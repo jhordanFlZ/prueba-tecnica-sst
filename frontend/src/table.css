@@ -1,0 +1,97 @@
+.table-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.search-input {
+  width: 245px;
+  border: 1px solid #e6ebef;
+  border-radius: 8px;
+  padding: 9px 13px;
+  outline: 0;
+  color: #42576c;
+  font-size: 11px;
+  background: #f7f9fb;
+}
+.search-input:focus {
+  border-color: #7baeb5;
+  background: #fff;
+  box-shadow: 0 0 0 3px #e2f0f1;
+}
+.filter-button.active {
+  background: #e8f4f2;
+  color: #347e79;
+  border-color: #b6d9d5;
+}
+.filter-select {
+  border: 1px solid #dce4eb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #526a80;
+  font-size: 11px;
+  background: #fff;
+  position: absolute;
+  top: 40px;
+  left: 253px;
+  z-index: 2;
+}
+.page-size-label {
+  font-size: 10px;
+  color: #8a9aa9;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #edf1f4;
+  padding: 14px 22px;
+  color: #8a9aa9;
+  font-size: 11px;
+}
+.pagination div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pagination button,
+.pagination b {
+  border: 1px solid #e2e8ed;
+  background: #fff;
+  color: #61768a;
+  border-radius: 6px;
+  min-width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pagination b {
+  background: #17334f;
+  color: #fff;
+  border-color: #17334f;
+}
+@media (max-width: 600px) {
+  .table-toolbar {
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+  }
+  .table-tools {
+    width: 100%;
+  }
+  .search-input {
+    width: 100%;
+  }
+  .filter-select {
+    left: 0;
+    top: 40px;
+  }
+  .page-size-label {
+    align-self: flex-end;
+  }
+}

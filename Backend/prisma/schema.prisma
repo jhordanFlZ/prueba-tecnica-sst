@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  HRBP
+  LEADER
+  MEDICAL
+  ADMIN_SST
+}
+
+enum CaseStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role
+  createdAt    DateTime @default(now())
+}
+
+model Employee {
+  id         String          @id @default(cuid())
+  code       String          @unique
+  name       String
+  department String
+  position   String
+  hireDate   DateTime
+  absences   Absence[]
+  symptoms   SymptomReport[]
+  cases      MedicalCase[]
+  alerts     Alert[]
+  createdAt  DateTime        @default(now())
+}
+
+model Absence {
+  id             String   @id @default(cuid())
+  recordCode     String?
+  employeeId     String
+  startDate      DateTime
+  endDate        DateTime
+  days           Int
+  diagnosis      String
+  cie10          String?
+  healthCategory String?
+  issuer         String?
+  employee       Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, startDate])
+}
+
+model SymptomReport {
+  id              String   @id @default(cuid())
+  responseCode    String?
+  employeeId      String
+  reportedAt      DateTime
+  symptoms        String
+  hazard          String?
+  painLevel       Int
+  hazardExposure  Boolean
+  requiresMedical Boolean  @default(false)
+  employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, reportedAt])
+}
+
+model MedicalCase {
+  id         String     @id @default(cuid())
+  employeeId String
+  title      String
+  status     CaseStatus @default(ACTIVE)
+  risk       RiskLevel  @default(LOW)
+  notes      String     @db.Text
+  openedAt   DateTime   @default(now())
+  closedAt   DateTime?
+  employee   Employee   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([status, risk])
+}
+
+model Alert {
+  id         String    @id @default(cuid())
+  employeeId String
+  type       String
+  message    String
+  risk       RiskLevel
+  resolved   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  employee   Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([resolved, createdAt])
+}

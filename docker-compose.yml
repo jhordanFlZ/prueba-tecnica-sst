@@ -1,0 +1,22 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: sst-mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: pruebaTecnica
+      MARIADB_USER: sst_user
+      MARIADB_PASSWORD: sst_password
+    ports:
+      - "3306:3306"
+      - "3307:3306"
+    volumes:
+      - sst_mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+volumes:
+  sst_mariadb:
